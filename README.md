@@ -1,23 +1,42 @@
-# WireGuard SOC Lab
+# WG SOC Lab
 
-SOC monitoring project based on:
+Lightweight SOC telemetry and alerting system for WireGuard servers using Linux Auditd.
 
-- WireGuard VPN
-- auditd
-- Python parser
-- Telegram alerts
+## What it does
 
-## Features
+Monitors security-relevant events and sends Telegram alerts in real time.
 
-- Detect VPN config changes
-- Detect private key access
-- Detect WireGuard command execution
-- Real-time Telegram notifications
+Targets:
 
-## Technologies
+- WireGuard config changes
+- Private key access
+- VPN execution
+- Admin/system actions
 
-- WireGuard
-- auditd
-- Python
-- systemd
-- Telegram Bot API
+
+## Architecture
+
+Auditd → log → Python parser → rule engine → Telegram notifier
+
+
+## Severity mapping
+
+- CRITICAL: private key access
+- MEDIUM: config changes
+- LOW: VPN command execution
+
+## Run
+
+pip install requests
+python3 scripts/parser.py
+
+## Systemd
+
+systemctl enable --now parser.service
+
+## Limitations
+
+- no storage
+- no correlation
+- no deduplication
+- rule-based only
