@@ -1,0 +1,15 @@
+# WireGuard config
+-w /etc/wireguard/wg0.conf -p wa -k vpn_config
+
+# Server keys
+-w /etc/wireguard/server_private.key -p rwa -k vpn_server_key
+-w /etc/wireguard/server_public.key -p wa -k vpn_public_key
+
+# Firewall
+-w /etc/nftables.conf -p wa -k firewall
+-w /etc/iptables/rules.v4 -p wa -k firewall
+-w /etc/iptables/rules.v6 -p wa -k firewall
+
+# WireGuard execution
+-a always,exit -F arch=b64 -S execve -F path=/usr/bin/wg -k vpn_exec
+-a always,exit -F arch=b64 -S execve -F path=/usr/bin/wg-quick -k vpn_exec
