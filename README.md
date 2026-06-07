@@ -4,39 +4,50 @@ Lightweight SOC telemetry and alerting system for WireGuard servers using Linux 
 
 ## What it does
 
-Monitors security-relevant events and sends Telegram alerts in real time.
+Monitors security-relevant events on a WireGuard VPN server and sends real-time Telegram alerts.
 
 Targets:
-
-- WireGuard config changes
+- WireGuard configuration changes
 - Private key access
-- VPN execution
-- Admin/system actions
-
+- VPN process execution
+- Administrative/system actions
 
 ## Architecture
 
-Auditd → log → Python parser → rule engine → Telegram notifier
-
+Auditd → log files → Python parser → rule engine → Telegram notifications
 
 ## Severity mapping
 
 - CRITICAL: private key access
-- MEDIUM: config changes
+- MEDIUM: configuration changes
 - LOW: VPN command execution
 
-## Run
+## Example detection flow
 
+WireGuard config modified  
+→ auditd event generated  
+→ parser processes log  
+→ rule engine matches event  
+→ Telegram alert sent
+
+## Setup
+
+Install dependencies:
 pip install requests
+
+Run manually:
 python3 scripts/parser.py
 
 ## Systemd
 
+Enable service:
 systemctl enable --now parser.service
+
+Service runs the parser continuously in background for real-time monitoring.
 
 ## Limitations
 
-- no storage
-- no correlation
+- no persistent storage
+- no event correlation
 - no deduplication
-- rule-based only
+- rule-based detection only
